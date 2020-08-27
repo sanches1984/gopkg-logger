@@ -1,3 +1,3 @@
-module github.com/severgroup-tt/gopkg-logger
+module github.com/sanches1984/gopkg-logger
 
 go 1.14
