@@ -13,10 +13,10 @@ func TestLoggerConsole(t *testing.T) {
 
 	logger := For("test1")
 
-	logger.Debug(ctx).Msg("test debug")
-	logger.Info(ctx).Msg("test info")
-	logger.Warn(ctx).Msg("test warn")
-	logger.Error(ctx).Msg("test error")
+	WithContext(ctx, logger).Debug().Msg("test debug")
+	WithContext(ctx, logger).Info().Msg("test info")
+	WithContext(ctx, logger).Warn().Msg("test warn")
+	WithContext(ctx, logger).Error().Msg("test error")
 }
 
 func TestLoggerJSON(t *testing.T) {
@@ -27,8 +27,8 @@ func TestLoggerJSON(t *testing.T) {
 
 	logger := For("test2")
 
-	logger.Debug(ctx).Msg("test debug")
-	logger.Info(ctx).Msg("test info")
-	logger.Warn(ctx).Msg("test warn")
-	logger.Error(ctx).Msg("test error")
+	WithContext(ctx, logger).Debug().Msg("test debug")
+	WithContext(ctx, logger).Info().Msg("test info")
+	WithContext(ctx, logger).Warn().Msg("test warn")
+	WithContext(ctx, logger).Error().Msg("test error")
 }

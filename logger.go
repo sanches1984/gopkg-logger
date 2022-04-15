@@ -54,7 +54,7 @@ func Init(logType Type, logLevel Level) {
 	zerolog.SetGlobalLevel(level)
 }
 
-func For(service string) Logger {
+func For(service string) *zerolog.Logger {
 	var logger zerolog.Logger
 	if loggerType == TypeJson {
 		logger = log.With().Timestamp().Logger()
@@ -62,21 +62,11 @@ func For(service string) Logger {
 		logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout}).With().Timestamp().Logger()
 	}
 
-	return Logger{logger.With().Str("service", service).Logger()}
+	logger = logger.With().Str("service", service).Logger()
+	return &logger
 }
 
-func (l Logger) Debug(ctx context.Context) *zerolog.Event {
-	return l.Logger.Debug().Str(requestIDKey, getRequestIDFromContext(ctx))
-}
-
-func (l Logger) Info(ctx context.Context) *zerolog.Event {
-	return l.Logger.Info().Str(requestIDKey, getRequestIDFromContext(ctx))
-}
-
-func (l Logger) Warn(ctx context.Context) *zerolog.Event {
-	return l.Logger.Warn().Str(requestIDKey, getRequestIDFromContext(ctx))
-}
-
-func (l Logger) Error(ctx context.Context) *zerolog.Event {
-	return l.Logger.Error().Str(requestIDKey, getRequestIDFromContext(ctx))
+func WithContext(ctx context.Context, logger *zerolog.Logger) *zerolog.Logger {
+	l := logger.With().Str(requestIDKey, getRequestIDFromContext(ctx)).Logger()
+	return &l
 }
