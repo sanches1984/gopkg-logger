@@ -25,10 +25,6 @@ const (
 	LevelError    = "error"
 )
 
-type Logger struct {
-	zerolog.Logger
-}
-
 func Init(logType Type, logLevel Level) {
 	var level zerolog.Level
 	switch logLevel {
@@ -54,7 +50,7 @@ func Init(logType Type, logLevel Level) {
 	zerolog.SetGlobalLevel(level)
 }
 
-func For(service string) *zerolog.Logger {
+func For(service string) zerolog.Logger {
 	var logger zerolog.Logger
 	if loggerType == TypeJson {
 		logger = log.With().Timestamp().Logger()
@@ -62,11 +58,10 @@ func For(service string) *zerolog.Logger {
 		logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout}).With().Timestamp().Logger()
 	}
 
-	logger = logger.With().Str("service", service).Logger()
-	return &logger
+	return logger.With().Str("service", service).Logger()
 }
 
-func WithContext(ctx context.Context, logger *zerolog.Logger) *zerolog.Logger {
+func WithContext(ctx context.Context, logger zerolog.Logger) *zerolog.Logger {
 	l := logger.With().Str(requestIDKey, getRequestIDFromContext(ctx)).Logger()
 	return &l
 }
