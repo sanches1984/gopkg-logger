@@ -1,4 +1,4 @@
-package logger
+package log
 
 import (
 	"context"
@@ -9,7 +9,7 @@ func TestLoggerConsole(t *testing.T) {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, requestIDKey, "12345")
 
-	Init(LogTypeConsole, LogLevelDebug)
+	Init(TypeConsole, LevelDebug)
 
 	logger := For("test1")
 
@@ -23,7 +23,7 @@ func TestLoggerJSON(t *testing.T) {
 	ctx := context.Background()
 	ctx = context.WithValue(ctx, requestIDKey, "54321")
 
-	Init(LogTypeJson, LogLevelInfo)
+	Init(TypeJson, LevelInfo)
 
 	logger := For("test2")
 

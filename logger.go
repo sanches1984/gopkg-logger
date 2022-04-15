@@ -1,4 +1,4 @@
-package logger
+package log
 
 import (
 	"context"
@@ -7,48 +7,48 @@ import (
 	"os"
 )
 
-var loggerType LogType
+var loggerType Type
 
-type LogType string
-type LogLevel string
+type Type string
+type Level string
 
 const (
-	LogTypeConsole = "console"
-	LogTypeJson    = "json"
+	TypeConsole = "console"
+	TypeJson    = "json"
 )
 
 const (
-	LogLevelDisabled = "disabled"
-	LogLevelDebug    = "debug"
-	LogLevelInfo     = "info"
-	LogLevelWarn     = "warn"
-	LogLevelError    = "error"
+	LevelDisabled = "disabled"
+	LevelDebug    = "debug"
+	LevelInfo     = "info"
+	LevelWarn     = "warn"
+	LevelError    = "error"
 )
 
 type Logger struct {
 	zerolog.Logger
 }
 
-func Init(logType LogType, logLevel LogLevel) {
+func Init(logType Type, logLevel Level) {
 	var level zerolog.Level
 	switch logLevel {
-	case LogLevelDisabled:
+	case LevelDisabled:
 		level = zerolog.Disabled
-	case LogLevelDebug:
+	case LevelDebug:
 		level = zerolog.DebugLevel
-	case LogLevelWarn:
+	case LevelWarn:
 		level = zerolog.WarnLevel
-	case LogLevelError:
+	case LevelError:
 		level = zerolog.ErrorLevel
 	default:
 		level = zerolog.InfoLevel
 	}
 
 	switch logType {
-	case LogTypeJson:
+	case TypeJson:
 		loggerType = logType
 	default:
-		loggerType = LogTypeConsole
+		loggerType = TypeConsole
 	}
 
 	zerolog.SetGlobalLevel(level)
@@ -56,7 +56,7 @@ func Init(logType LogType, logLevel LogLevel) {
 
 func For(service string) Logger {
 	var logger zerolog.Logger
-	if loggerType == LogTypeJson {
+	if loggerType == TypeJson {
 		logger = log.With().Timestamp().Logger()
 	} else {
 		logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout}).With().Timestamp().Logger()
