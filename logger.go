@@ -2,6 +2,7 @@ package log
 
 import (
 	"context"
+	"github.com/go-chi/chi/middleware"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"os"
@@ -11,6 +12,8 @@ var loggerType Type
 
 type Type string
 type Level string
+
+const requestIDKey = "request_id"
 
 const (
 	TypeConsole = "console"
@@ -62,6 +65,6 @@ func For(service string) zerolog.Logger {
 }
 
 func WithContext(ctx context.Context, logger zerolog.Logger) *zerolog.Logger {
-	l := logger.With().Str(requestIDKey, getRequestIDFromContext(ctx)).Logger()
+	l := logger.With().Str(requestIDKey, middleware.GetReqID(ctx)).Logger()
 	return &l
 }

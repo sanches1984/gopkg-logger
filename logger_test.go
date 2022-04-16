@@ -2,12 +2,13 @@ package log
 
 import (
 	"context"
+	"github.com/go-chi/chi/middleware"
 	"testing"
 )
 
 func TestLoggerConsole(t *testing.T) {
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, requestIDKey, "12345")
+	ctx = context.WithValue(ctx, middleware.RequestIDKey, "test")
 
 	Init(TypeConsole, LevelDebug)
 
@@ -21,7 +22,7 @@ func TestLoggerConsole(t *testing.T) {
 
 func TestLoggerJSON(t *testing.T) {
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, requestIDKey, "54321")
+	ctx = context.WithValue(ctx, middleware.RequestIDKey, "test")
 
 	Init(TypeJson, LevelInfo)
 
